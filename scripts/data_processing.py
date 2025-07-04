@@ -14,6 +14,13 @@ def extract_text_from_pdf(pdf_path):
             text += page.extract_text()
     return text
 
+
+def lemmatize_text(text):
+    doc = nlp(text)
+    tokens = [token.lemma_.lower() for token in doc if token.is_alpha and not token.is_stop]
+    return ' '.join(tokens)
+
+
 def preprocess_ppc(text):
     text = re.sub(r'===== Page \d+ =====', '', text)
 
