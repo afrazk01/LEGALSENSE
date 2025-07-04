@@ -1,6 +1,10 @@
 import PyPDF2 , re
 import json
 from pathlib import Path
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
 
 def extract_text_from_pdf(pdf_path):
     text = ''
