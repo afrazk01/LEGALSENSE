@@ -21,3 +21,9 @@ for section, text in ppc_sections.items():
     embeddings[section] = embedding
 
 output_path = Path(__file__).parent.parent / "data/embeddings/ppc_embeddings.json"
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+with open(output_path, 'w') as f:
+    json.dump(embeddings,f, indent=2)
+
+print(f"Embeddings saved to: {output_path.resolve()}")
