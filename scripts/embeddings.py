@@ -14,3 +14,10 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 
 print('creating embeddings...')
+embeddings = {}
+
+for section, text in ppc_sections.items():
+    embedding = model.encode(text).tolist()
+    embeddings[section] = embedding
+
+output_path = Path(__file__).parent.parent / "data/embeddings/ppc_embeddings.json"
