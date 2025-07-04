@@ -33,7 +33,8 @@ def preprocess_ppc(text):
         if item.strip().isdigit() or re.match(r'\d+[A-Z]*-*', item.strip()):
             current_section = item.strip()
         elif current_section:
-            structured_data[current_section] = item.strip()
+            cleaned_text = lemmatize_text(item.strip())
+            structured_data[current_section] = cleaned_text
     return structured_data
 
 def save_ppc_json(structured_ppc):
