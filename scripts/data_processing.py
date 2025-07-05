@@ -23,32 +23,37 @@ def lemmatize_text(text):
 
 def preprocess_ppc(text):
     text = re.sub(r'===== Page \d+ =====', '', text)
-
-    section = re.split(r'\n(\d+[A-Z]*-*[\s\S]*?\.)', text)
-
+    pattern = r'(?<=\n)(\d+[A-Z\-]*\.)\s+(.*?)(?=\n\d+[A-Z\-]*\.|\Z)'
+    matches = re.findall(pattern, text, flags=re.DOTALL)
+    
     structured_data = {}
-    current_section = None
+    clean_structured_data = {} 
+    
+    for section_num, content in matches:
+        section_num = section_num.strip().replace('.', '')
+        content = content.strip()
+        
+        if content:
+         
+            structured_data[section_num] = content
+        
+            cleaned_text = lemmatize_text(content)
+            clean_structured_data[section_num] = cleaned_text
+    
+    return structured_data, clean_structured_data 
 
-    for item in section[1:]:
-        if item.strip().isdigit() or re.match(r'\d+[A-Z]*-*', item.strip()):
-            current_section = item.strip()
-        elif current_section:
-            cleaned_text = lemmatize_text(item.strip())
-            structured_data[current_section] = cleaned_text
-    return structured_data
-
-def save_ppc_json(structured_ppc):
-    output_path = Path(__file__).parent.parent / "data/processed/ppc_section.json"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    print(f"Saving JSON to: {output_path.resolve()}")
-    with open(output_path, 'w') as f:
-        json.dump(structured_ppc, f, indent=4)
-
+def save_ppc_json(original_data, clean_data): 
+    
+    orig_path = Path(__file__).parent.parent / "data/processed/ppc_section_original.json"
+    orig_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(orig_path, 'w') as f:
+        json.dump(original_data, f, indent=4)
+    
+    
+    clean_path = Path(__file__).parent.parent / "data/processed/ppc_section_clean.json"
+    with open(clean_path, 'w') as f:
+        json.dump(clean_data, f, indent=4)
 
 pdf_text = extract_text_from_pdf('scripts/Pakistan Penal Code.pdf')
-structured_ppc = preprocess_ppc(pdf_text)
-save_ppc_json(structured_ppc)
-
-
-
+original_ppc, clean_ppc = preprocess_ppc(pdf_text)  
+save_ppc_json(original_ppc, clean_ppc)  
