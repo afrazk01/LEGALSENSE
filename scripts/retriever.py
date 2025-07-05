@@ -3,3 +3,8 @@ import pickle
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+
+model = SentenceTransformer('all-MiniLM-L6-v2')
+index = faiss.read_index('data/faiss_index.index')
+texts = pickle.load(open('data/section_texts.pkl', 'rb'))
+
