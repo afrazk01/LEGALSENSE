@@ -12,11 +12,29 @@ nlp = spacy.load("en_core_web_sm")
 
 
 def extract_text_from_pdf(pdf_path):
-    text = ''
+    full_text = ''
     with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text() + '\n'
-    return text
+        for i,page in enumerate(pdf.pages):
+            try:
+                tables = page.extract_tables()
+                table_text = "\n\n[TABLE]\n" + "\n".join(
+                    " | ".join(str(cell) for row in table for cell in row if cell)
+                    for table in tables
+                ) + "\n[END TABLE]\n\n"
+
+                text = page.extract_text(
+                    layout=True,
+                    x_tolerance=2,
+                    y_tolerance=2,
+                    keep_blank_chars=True
+                )
+                full_text.append(table_text + text + "\n")
+                logging.info(f"Processed page {i+1}")
+            except Exception as e:
+                logging.error(f"Error processing page {i+1}: {str(e)}")
+                continue
+
+    return "\n".join(full_text)
 
 
 def lemmatize_text(text):
