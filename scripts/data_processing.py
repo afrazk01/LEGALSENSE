@@ -1,4 +1,5 @@
-import PyPDF2 , re
+import pdfplumber
+import re
 import json
 from pathlib import Path
 import spacy
@@ -8,10 +9,9 @@ nlp = spacy.load("en_core_web_sm")
 
 def extract_text_from_pdf(pdf_path):
     text = ''
-    with open(pdf_path, 'rb') as file:
-        reader = PyPDF2.PdfReader(file)
-        for page in reader.pages:
-            text += page.extract_text()
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text() + '\n'
     return text
 
 
