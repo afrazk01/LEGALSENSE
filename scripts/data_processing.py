@@ -37,10 +37,18 @@ def extract_text_from_pdf(pdf_path):
     return "\n".join(full_text)
 
 
-def lemmatize_text(text):
-    doc = nlp(text)
-    tokens = [token.lemma_.lower() for token in doc if token.is_alpha and not token.is_stop]
-    return ' '.join(tokens)
+def clean_text(text):
+    text = re.sub(r'Page \d+ of \d+', '', text)
+    text = re.sub(r'===== Page \d+ =====', '', text)
+    text = re.sub(r'\[\d+\]', '', text)
+
+    text = re.sub(r'(\w+)-\s+(\w+)', r'\1\2', text)
+
+    text = re.sub(r'\s+', ' ', text)
+
+    text = re.sub(r'(?<!\w)\d{1,2}(?!\w)', '', text)
+
+    return text.strip()
 
 
 def preprocess_ppc(text):
