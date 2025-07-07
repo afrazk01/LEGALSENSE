@@ -53,26 +53,33 @@ def clean_text(text):
 
 def preprocess_ppc(text):
 
-    text = re.sub(r'Page \d+ of \d+', '', text)
-    text = re.sub(r'===== Page \d+ =====', '', text)
-    pattern = r'(?<=\n)(\d+[A-Z\-]*\.)\s+(.*?)(?=\n\d+[A-Z\-]*\.|\Z)'
-    matches = re.findall(pattern, text, flags=re.DOTALL)
+    text = clean_text(text)
+    pattern = r'(?:^|\n)((?:CHAPTER\s+[IVXLCDM]+|Section\s+)?(\d+[A-Z\-]*\.?))\s+([\s\S]*?)(?=\n(?:CHAPTER|Section\s+\d+|\d+[A-Z\-]*\.?|\Z))'
+    matches = re.findall(pattern, text, flags=re.MULTILINE | re.IGNORECASE)
+    
     
     structured_data = {}
     clean_structured_data = {} 
     
-    for section_num, content in matches:
+    for full_header, section_num, content in matches:
         section_num = section_num.strip().replace('.', '')
-        content = content.strip()
+        content = clean_text(content)
         
         if content:
          
             structured_data[section_num] = content
         
-            cleaned_text = lemmatize_text(content)
-            clean_structured_data[section_num] = cleaned_text
+            doc = nlp(content)
+            cleaned_tokens = []
+            for token in doc:
+                if token.pos_ in ['NOUN', 'VERB', 'ADJ']:
+                    cleaned_tokens.append(token.lemma_.lower())
+                else:
+                    cleaned_tokens.append(token.text.lower())
+                    clean_structured_data[section_num] = ' '.join(cleaned_tokens)
     
-    return structured_data, clean_structured_data 
+    logging.info(f"Extracted {len(structured_data)} sections")
+    return structured_data, clean_structured_data
 
 def save_ppc_json(original_data, clean_data): 
     
