@@ -1,0 +1,15 @@
+# Path configuration
+pdf_path: "scripts/Pakistan Penal Code.pdf"
+output_dir: "data/processed"
+
+# Neo4j configuration
+neo4j:
+  uri: "bolt://localhost:7687"
+  user: "neo4j"
+  password: "your_password"
+
+# Model configuration
+models:
+  embedding: "nlpaueb/legal-bert-base-uncased"
+  qa: "saibo/legal-roberta-base-squad2"
+
