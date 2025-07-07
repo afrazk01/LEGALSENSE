@@ -3,6 +3,10 @@ import re
 import json
 from pathlib import Path
 import spacy
+import logging
+
+logging.basicConfig(filename='data_processing.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -22,6 +26,8 @@ def lemmatize_text(text):
 
 
 def preprocess_ppc(text):
+
+    text = re.sub(r'Page \d+ of \d+', '', text)
     text = re.sub(r'===== Page \d+ =====', '', text)
     pattern = r'(?<=\n)(\d+[A-Z\-]*\.)\s+(.*?)(?=\n\d+[A-Z\-]*\.|\Z)'
     matches = re.findall(pattern, text, flags=re.DOTALL)
