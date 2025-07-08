@@ -97,3 +97,17 @@ def parse_legaldocument(text):
                     structured_data[chapter_key]["sections"][section_num] = preserve_legalterm(section_text)
     return dict(structured_data)
 
+
+
+
+def flatten_sections(structured_data):
+    flat_dict = {}
+    for chapter, content in structured_data.items():
+        for sec_num, sec_content in content['sections'].items():
+            if isinstance(sec_content, dict) and "main_text" in sec_content:
+                full_text = sec_content["main_text"] + "\n" + "\n".join(sec_content["subsections"].values())
+            else:
+                full_text = sec_content
+            flat_dict[sec_num] = full_text.strip()
+    return flat_dict
+
