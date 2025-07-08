@@ -111,3 +111,10 @@ def flatten_sections(structured_data):
             flat_dict[sec_num] = full_text.strip()
     return flat_dict
 
+
+def save_json(data, path):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+    logging.info(f"Saved: {path}")
