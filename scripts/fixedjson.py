@@ -4,7 +4,7 @@ import json
 with open("data/embeddings/ppc_embeddings.json", "r") as f:
     embeddings_data = json.load(f)
 
-with open("data/processed/ppc_section_original.json", "r") as f:  
+with open("data/processed/ppc_section.json", "r") as f:  
     original_texts = json.load(f)  
 
 
