@@ -45,3 +45,17 @@ def clean_text(text):
     text = re.sub(r'(\w)-\s+(\w)', r'\1\2', text)
     text = re.sub(r'\d+\[\]\d*', '', text)  
     return text.strip()
+
+
+def preserve_legalterm(text):
+    doc = nlp(text)
+    preserved = []
+    
+    for token in doc:
+        if token.text.isupper() or token.text.istitle():
+            preserved.append(token.text)
+        else:
+            preserved.append(token.text.lower())
+    return ''.join(preserved)
+
+
