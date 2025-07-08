@@ -59,3 +59,10 @@ def preserve_legalterm(text):
     return ''.join(preserved)
 
 
+def parse_legaldocument(text):
+    
+    structured_data = defaultdict(lambda: {'title': "", "sections": defaultdict(dict)})
+    cleaned_text = clean_text(text)
+
+    chapters = re.findall(Structure_pattern['chapter'], cleaned_text, re.IGNORECASE)
+    
