@@ -65,4 +65,35 @@ def parse_legaldocument(text):
     cleaned_text = clean_text(text)
 
     chapters = re.findall(Structure_pattern['chapter'], cleaned_text, re.IGNORECASE)
-    
+
+    for chapter_code, chapter_title in chapters:
+        chapter_key = f"{chapter_code.strip().replace(' ', '_')}"
+        chapter_title = chapter_title.strip()
+        structured_data[chapter_key]["title"] = chapter_title
+
+        chapter_block_regex = rf'{re.escape(chapter_code)}\s*{re.escape(chapter_title)}(.*?)(?=CHAPTER\s+[IVXLCDM]+|\Z)'
+        chapter_block = re.search(chapter_block_regex, cleaned_text, re.IGNORECASE | re.DOTALL)
+
+        if chapter_block:
+            chapter_content = chapter_block.group(1)
+            sections = re.findall(Structure_pattern['section'], chapter_content, re.MULTILINE | re.DOTALL)
+
+            for section_num, section_text in sections:
+                section_text = section_text.strip()
+                if not section_text:
+                    continue
+
+                subsections = re.findall(Structure_pattern['subsection'], section_text, re.MULTILINE)
+                if subsections:
+                    structured_data[chapter_key]["sections"][section_num] = {
+                        "main_text": "",
+                        "subsections": {}
+                    }
+                    main_text, _, subs_text = section_text.partition('\n')
+                    structured_data[chapter_key]["sections"][section_num]["main_text"] = preserve_legalterm(main_text.strip())
+                    for sub_num, sub_text in subsections:
+                        structured_data[chapter_key]["sections"][section_num]["subsections"][sub_num] = preserve_legalterm(sub_text.strip())
+                else:
+                    structured_data[chapter_key]["sections"][section_num] = preserve_legalterm(section_text)
+    return dict(structured_data)
+
