@@ -23,3 +23,21 @@ Structure_pattern = {
     'subsection': r'^\s*\(([a-z\d]+)\)\s+(.*?)$'
 }
 
+
+def extract_text_from_pdf(pdf_path):
+    full_text = []
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                try:
+                    text = page.extract_text(layout = True)
+                    full_text.append(text or "")
+                    logging.info(f"processed page {page.page_number}")
+                except Exception as e:
+                    logging.error(f"Error processing page {page.page_number}: {str(e)}")
+    except Exception as e:
+        logging.exception(f"Failed to open PDF: {str(e)}")
+    return "\n".join(full_text)
+
+
+
