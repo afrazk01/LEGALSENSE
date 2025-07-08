@@ -40,4 +40,8 @@ def extract_text_from_pdf(pdf_path):
     return "\n".join(full_text)
 
 
-
+def clean_text(text):
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'(\w)-\s+(\w)', r'\1\2', text)
+    text = re.sub(r'\d+\[\]\d*', '', text)  
+    return text.strip()
