@@ -16,4 +16,11 @@ def open_and_read_pdf(pdf_path: str) -> list[dict]:
     for page_number, page in tqdm(enumerate(doc)):
         text = page.get_text()
         text = text_formatter(text=text)
-        pages_and_text.append({"page_number":})
+        pages_and_text.append({"page_number": page_number - 4,
+                               "page_char_count": len(text),
+                               "page_word_count": len(text.split(" ")),
+                               "page_sentence_count": len(text.split(". ")),
+                               "page_token_count": len(text) / 4,
+                               "text": text})
+    return pages_and_text
+
