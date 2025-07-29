@@ -24,3 +24,6 @@ def open_and_read_pdf(pdf_path: str) -> list[dict]:
                                "text": text})
     return pages_and_text
 
+
+pages_and_text = open_and_read_pdf(pdf_path=pdf_path)
+pages_and_text[:2]
