@@ -3,11 +3,11 @@ import torch
 
 def load_falcon_model():
     """Load your Falcon-RW-1B model"""
-    tokenizer = AutoTokenizer.from_pretrained("models/falcon-rw-1b")
+    tokenizer = AutoTokenizer.from_pretrained("U:\\LEGALSENSE\\models\\falcon-rw-1b")
     model = AutoModelForCausalLM.from_pretrained(
-        "models/falcon-rw-1b",
+        "U:\\LEGALSENSE\\models\\falcon-rw-1b",
         device_map="auto",
-        torch_dtype=torch.bfloat16,
+        torch_dtype=torch.bfloat32,
         trust_remote_code=True
     )
     return tokenizer, model
