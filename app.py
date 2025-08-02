@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from script.embeddings import load_embedding_model, generate_embeddings
-from utils.retrieval import find_relevant_chunks
+from script.retrieval import find_relevant_chunks
 from script.promp_engineering import create_legal_prompt
 from script.generation import load_falcon_model, generate_answer
 from script.confidence import calculate_confidence
