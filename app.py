@@ -4,7 +4,7 @@ from script.embeddings import load_embedding_model, generate_embeddings
 from utils.retrieval import find_relevant_chunks
 from utils.prompt_engineering import create_legal_prompt
 from utils.generation import load_falcon_model, generate_answer
-from utils.confidence import calculate_confidence
+from script.confidence import calculate_confidence
 
 # Initialize models
 @st.cache_resource
