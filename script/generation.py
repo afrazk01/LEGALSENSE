@@ -2,7 +2,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 def load_falcon_model():
-    """Load your Falcon-RW-1B model"""
     tokenizer = AutoTokenizer.from_pretrained("U:\\LEGALSENSE\\models\\falcon-rw-1b")
     model = AutoModelForCausalLM.from_pretrained(
         "U:\\LEGALSENSE\\models\\falcon-rw-1b",
@@ -13,7 +12,6 @@ def load_falcon_model():
     return tokenizer, model
 
 def generate_answer(prompt, tokenizer, model):
-    """Generate answer with Falcon"""
     inputs = tokenizer(prompt, return_tensors="pt", max_length=2048, truncation=True).to(model.device)
     
     outputs = model.generate(
