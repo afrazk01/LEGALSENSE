@@ -7,7 +7,7 @@ def load_falcon_model():
     model = AutoModelForCausalLM.from_pretrained(
         "U:\\LEGALSENSE\\models\\falcon-rw-1b",
         device_map="auto",
-        torch_dtype=torch.bfloat32,
+        torch_dtype=torch.float32,
         trust_remote_code=True
     )
     return tokenizer, model
