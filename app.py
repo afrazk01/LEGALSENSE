@@ -16,7 +16,7 @@ def load_models():
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/chunks_and_embeddings.csv")
+    df = pd.read_csv("U:\\LEGALSENSE\\chunks_and_embeddings.csv")
     return df
 
 def main():
