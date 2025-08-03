@@ -6,14 +6,14 @@ from script.promp_engineering import create_legal_prompt
 from script.generation import load_falcon_model, generate_answer
 from script.confidence import calculate_confidence
 
-# Initialize models
+
 @st.cache_resource
 def load_models():
     embed_model = load_embedding_model()
     falcon_tokenizer, falcon_model = load_falcon_model()
     return embed_model, falcon_tokenizer, falcon_model
 
-# Load data
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("U:\\LEGALSENSE\\chunks_and_embeddings.csv")
