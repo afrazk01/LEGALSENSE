@@ -43,12 +43,30 @@ pip install psutil>=5.9.0
 
 ## 🚀 Running the Application
 
-### Option 1: Use Simplified App (Recommended for Windows)
+### Option 1: Use Minimal Mode (Recommended - Best Windows Compatibility)
+```bash
+streamlit run app_minimal.py
+```
+**This version is specifically designed to avoid PyTorch classes error on Windows.**
+
+### Option 2: Use Alternative Mode (GPT-2 Based)
+```bash
+streamlit run app_alternative.py
+```
+**This version uses GPT-2 instead of Falcon for better compatibility.**
+
+### Option 3: Use Online Mode (May have PyTorch issues)
+```bash
+streamlit run app_online.py
+```
+**This version downloads models automatically from Hugging Face Hub on first run.**
+
+### Option 4: Use Simplified App (Requires Model Download)
 ```bash
 streamlit run app_simple.py
 ```
 
-### Option 2: Use Main App
+### Option 5: Use Main App
 ```bash
 streamlit run app.py
 ```
@@ -126,6 +144,7 @@ LEGALSENSE/
 
 ## 🎯 Quick Start
 
+### Option A: Online Mode (Easiest)
 1. **Install dependencies:**
    ```bash
    install_windows.bat
@@ -133,13 +152,29 @@ LEGALSENSE/
 
 2. **Run the app:**
    ```bash
-   streamlit run app_simple.py
+   streamlit run app_online.py
    ```
 
 3. **Open browser:**
    - Go to `http://localhost:8501`
-   - Wait for models to load (first time only)
+   - Wait for models to download (first time only)
    - Start asking legal questions!
+
+### Option B: Local Models
+1. **Install dependencies:**
+   ```bash
+   install_windows.bat
+   ```
+
+2. **Download models:**
+   ```bash
+   python download_models.py
+   ```
+
+3. **Run the app:**
+   ```bash
+   streamlit run app_simple.py
+   ```
 
 ## 🔄 Updates and Maintenance
 

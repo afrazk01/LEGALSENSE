@@ -9,12 +9,10 @@ def load_embedding_model():
     # Determine optimal device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
-    # Load model with optimizations
+    # Load model with optimizations (removed torch_dtype for compatibility)
     model = SentenceTransformer(
         model_path,
-        device=device,
-        # Use half precision for faster inference and less memory
-        torch_dtype=torch.float16 if device == 'cuda' else torch.float32
+        device=device
     )
     
     # Optimize for inference
