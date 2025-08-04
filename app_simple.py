@@ -15,7 +15,6 @@ from script.embeddings import load_embedding_model, generate_embeddings
 from script.retrieval import find_relevant_chunks
 from script.promp_engineering import create_legal_prompt
 from script.generation import load_falcon_model, generate_answer
-from script.model_optimizer import optimize_torch_settings, clear_memory, get_optimal_device
 
 # Set page config early for better performance
 st.set_page_config(
@@ -62,9 +61,6 @@ def load_data():
 
 def initialize_models():
     """Initialize all models efficiently"""
-    # Optimize PyTorch settings
-    optimize_torch_settings()
-    
     # Load models in parallel using session state
     if "models_loaded" not in st.session_state:
         st.session_state.models_loaded = False
@@ -74,9 +70,6 @@ def initialize_models():
     
     if not st.session_state.models_loaded:
         with st.spinner("Loading AI models (this may take a moment on first run)..."):
-            # Clear memory before loading
-            clear_memory()
-            
             # Load embedding model
             embed_model = load_embedding_model_cached()
             if embed_model is not None:
@@ -176,4 +169,4 @@ def main():
                         st.divider()
 
 if __name__ == "__main__":
-    main()
+    main() 
